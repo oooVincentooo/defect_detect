@@ -1,0 +1,1 @@
+Application DEFECTdet (defect detector) is located in Application folder. Copy to DEFECTdet folder to local drive. Start program open: DEFECTdet.exe from folder also create a shortcut to desktop (right mouse button): sent to desktop (create shortcut).

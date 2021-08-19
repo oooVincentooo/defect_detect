@@ -1,0 +1,19 @@
+#Create clean Python environment
+Create clean Python environment in Anocaonda (navigator). Install required references: environment_DEFECTdet.yml
+pip install pandas
+pip install XLsxWriter
+pip install numpy
+pip install mathplot
+pip instal openCV2
+etc.
+
+#Install Py to Exe
+https://pypi.org/project/auto-py-to-exe/
+start in Python cmd: auto-py-to-exe
+
+Select and copy application folders:
+Recipes
+Settings
+
+Example py-to-exe:
+pyinstaller --noconfirm --onedir --windowed --icon "C:/Software_Dev/v1.0000/Settings/ICON.ico" --add-data "C:/Software_Dev/v1.0000/Recipes;Recipes/" --add-data "C:/Software_Dev/v1.0000/Settings;Settings/"  "C:/Software_Dev/v1.0000/DEFECTdet.py"
