@@ -11,9 +11,12 @@ etc.
 https://pypi.org/project/auto-py-to-exe/
 start in Python cmd: auto-py-to-exe
 
-Select and copy application folders:
+#Select and copy application folders:
 Recipes
 Settings
 
-Example py-to-exe:
+#Example py-to-exe:
 pyinstaller --noconfirm --onedir --windowed --icon "C:/Software_Dev/v1.0000/Settings/ICON.ico" --add-data "C:/Software_Dev/v1.0000/Recipes;Recipes/" --add-data "C:/Software_Dev/v1.0000/Settings;Settings/"  "C:/Software_Dev/v1.0000/DEFECTdet.py"
+
+#False positive
+https://medium.com/@markhank/how-to-stop-your-python-programs-being-seen-as-malware-bfd7eb407a7

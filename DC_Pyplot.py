@@ -24,8 +24,11 @@ import numpy as np
         
 def setplots():
 
-    #ax1.axis("off")
-    #ax2.axis("off")
+    ax1.axis("on")
+    ax2.axis("on")
+    ax3.axis("on")
+    
+    
     ax3.set_yticklabels([])
     
     
@@ -52,33 +55,56 @@ def clearplots():
     ax2.clear()
     ax3.clear()
     
-def histogram(ravel,mean,stdev,treslow,tresup):
+    ax1.axis("off")
+    ax2.axis("off")
+    ax3.axis("off")
+    
+    
+def histogram(ravel,mean,stdev,treslow,tresup,lb,ub):
     #     #Create histogram and determine treshold and plot
-    ax3.hist(ravel,256,[0,256],color="gray")    
+    ax3.hist(ravel,256,[0,256],color='C0')    
     count,bins =np.histogram(ravel,bins=256, density=False)
     
-    text="mean: " + str(np.round(mean,0))
-    ax3.plot([mean,mean],[0,1.1*np.max(count)],color="blue",label=text)
+    lim=1.1*np.max(count)
     
+    text="stat range: " + str(np.round(lb,0)) + "-" + str(np.round(ub,0))
+    ax3.fill_between([lb,ub],[lim,lim], facecolor="C0",alpha=0.15,label=text)
+ 
+    ax3.plot([0,0],[0,lim],color="black",linewidth=1)  
+    ax3.plot([255,255],[0,lim],color="black",linewidth=1)
+    
+    
+    text="mean: " + str(np.round(mean,0))
+    ax3.plot([mean,mean],[0,lim],color="black",label=text)
+ 
     text="black $ " + str(treslow) +  " \sigma$: " + str(np.round(stdev*treslow,0))
-    ax3.plot([mean-treslow*stdev,mean-treslow*stdev],[0,1.1*np.max(count)],color="green",label=text)
+    ax3.plot([mean-treslow*stdev,mean-treslow*stdev],[0,lim],color="green",label=text)
     
     text="white $" + str(tresup) +  " \sigma$: " + str(np.round(stdev*tresup,0))
-    ax3.plot([mean+tresup*stdev,mean+tresup*stdev],[0,1.1*np.max(count)],color="red",label=text)
+    ax3.plot([mean+tresup*stdev,mean+tresup*stdev],[0,lim],color="red",label=text)
     
-    ax3.legend(loc="upper left")   
+    ax3.legend(loc="upper left",fontsize=8)   
     
     ax3.set_xlabel("grayscale value")
     ax3.set_ylabel("density")
 
-    asp =1024/1360 * np.diff(ax3.set_xlim())[0] / np.diff(ax3.get_ylim())[0]
+    ax3.set_ylim([0, lim])
+    ax3.set_xlim([-5, 260])
+    
+    asp =1024/1360 * np.diff(ax3.get_xlim())[0] / np.diff(ax3.get_ylim())[0]
+    #asp =1024/1360 * np.diff([0, 255]) / np.diff(ax3.set_ylim())[0]
+     
+    
     ax3.set_aspect(asp)
-
-
+    #ax3.set_aspect(1024/1360)
+    
+    
+  
+    
     
     
 #Pyplot
-fig= plt.figure(figsize = (8,2))
+fig= plt.figure(figsize = (10,3))
 
 gs1 = gridspec.GridSpec(1, 3)
 #gs1.update(wspace=0.1, hspace=0.1)

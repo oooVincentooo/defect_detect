@@ -54,15 +54,16 @@ def openimage(path):
     gray = cv2.imread(path, 0)  
     return gray
 
-def histogram(image):    
-     a=image.ravel()
-     mean=np.mean(a[a>50])
-     stdev=np.std(a[a>50])
-     #n_sigma_white=5
-     #tresswhite=mean+n_sigma_white*stdev
-     #n_sigma_black=5
-     #tressblack=mean-n_sigma_black*stdev
-     return {"ravel": a, "mean": mean, "stdev": stdev} 
+def histogram(image,lb,ub):   
+    
+    
+    a=image.ravel()
+    a_bool=np.logical_and(a >lb, a < ub)
+    ab = a[a_bool]
+    
+    mean=np.mean(ab)
+    stdev=np.std(ab)
+    return {"ravel": a, "mean": mean, "stdev": stdev} 
      
 def gray_RGB(img):
     gray_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)    

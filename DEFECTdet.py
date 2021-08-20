@@ -41,7 +41,10 @@ def recipe_open():
 
     recipe.open_ini(file)
     recipe_read()
-    recipelabel.config(text=os.path.basename(file))   
+    recipelabel.config(text=os.path.basename(file))  
+    recipe_settings()
+    pl.clearplots()
+    pl.fig.canvas.draw()  
     
    
 def recipe_save():
@@ -68,14 +71,19 @@ eqlz_hist={"active": 0, "clip": "", "size": 0}
 morph_open={"active": 0, "size": 0}
 morph_close={"active": 0, "size": 0}
 data={"columns": 0, "rows": 0, "dpi": 0}
+stats={"lb": 0, "ub": 0}
 
 def recipe_settings():
-    tres_black['size']=recipe.readint("black_defects","black_local_size")
-    tres_black['tres']=recipe.readint("black_defects","black_treshold")
+    
+    stats['lb']=recipe.readint("statistics","lower_bound")
+    stats['ub']=recipe.readint("statistics","upper_bound")    
+    
+    tres_black['size']=recipe.readint("black_defects","local_size")
+    tres_black['tres']=recipe.readint("black_defects","treshold")
     #print(tres_black)
     
-    tres_white['size']=recipe.readint("white_defects","white_local_size")
-    tres_white['tres']=recipe.readint("white_defects","white_treshold") 
+    tres_white['size']=recipe.readint("white_defects","local_size")
+    tres_white['tres']=recipe.readint("white_defects","treshold") 
     #print(tres_white)
     
     eqlz_hist['active']=recipe.readint("equalize_histogram","active")
@@ -141,8 +149,8 @@ def vision_calc(path, n):
 
     gray=vis.equal_hist(gray,eqlz_hist['active'],eqlz_hist['clip'],eqlz_hist['size'])
 
-    hist=vis.histogram(gray)   
-    pl.histogram(hist['ravel'],hist['mean'],hist['stdev'],tres_black['tres'],tres_white['tres'])
+    hist=vis.histogram(gray,stats["lb"],stats["ub"])   
+    pl.histogram(hist['ravel'],hist['mean'],hist['stdev'],tres_black['tres'],tres_white['tres'],stats["lb"],stats["ub"])
     
     gray_RGB=vis.gray_RGB(gray)
     
@@ -374,7 +382,7 @@ def items_selected(event):
         #print(path)
     
         vision_calc(path,1)
-        recipe_settings()
+        #recipe_settings()
 
 listbox.bind('<<ListboxSelect>>', items_selected)    
 listbox['yscrollcommand'] = scrollbar.set
