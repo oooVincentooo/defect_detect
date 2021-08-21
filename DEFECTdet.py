@@ -144,8 +144,8 @@ def vision_calc(path, n):
     pl.clearplots()
     pl.setplots()
     pl.ax1.imshow(gray, cmap='gray') 
-    pl.ax1.set_xlabel(str(os.path.basename(path)))
-    pl.ax1.set_ylabel("raw image grayscale")
+    pl.ax1.set_xlabel(str(os.path.basename(path)), fontsize=10)
+    pl.ax1.set_ylabel("raw image grayscale", fontsize=10)
 
     gray=vis.equal_hist(gray,eqlz_hist['active'],eqlz_hist['clip'],eqlz_hist['size'])
 
@@ -169,10 +169,10 @@ def vision_calc(path, n):
     white_total=white_defects['defects_all']
     white_summary=white_defects['defect_count']
 
-    pl.ax2.set_ylabel("processed image, treshold")
-    pl.ax2.set_xlabel("black defects: " + str(black_summary) + ", white defects: " + str(white_summary))
+    pl.ax2.set_ylabel("processed image, treshold", fontsize=10)
+    pl.ax2.set_xlabel("black defects: " + str(black_summary) + ", white defects: " + str(white_summary), fontsize=10)
 
-
+    pl.fig.subplots_adjust(left=0.05, hspace=0.02,wspace=0.1)
     
     if n==1:
         pl.fig.canvas.draw()   
