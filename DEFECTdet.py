@@ -172,7 +172,7 @@ def vision_calc(path, n):
     pl.ax2.set_ylabel("processed image, treshold", fontsize=10)
     pl.ax2.set_xlabel("black defects: " + str(black_summary) + ", white defects: " + str(white_summary), fontsize=10)
 
-    pl.fig.subplots_adjust(left=0.05, hspace=0.02,wspace=0.1)
+    pl.fig.subplots_adjust(left=0.025, hspace=0.025,wspace=0.1)
     
     if n==1:
         pl.fig.canvas.draw()   
