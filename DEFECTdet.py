@@ -19,6 +19,9 @@ import DC_Pyplot as pl
 import os
 import sys
 
+
+version="version: 1.05"
+
 def file_open():
    file = fd.askopenfilenames(parent=root, title='Open Images', filetypes=[
                     ("image", ".jpeg"),
@@ -158,6 +161,7 @@ def vision_calc(path, n):
     pl.ax2.imshow(black_defects['image'], cmap='gray')  
     
     black_total=black_defects['defects_all']
+    black_meanarea=black_defects['area_mean']
     black_summary=black_defects['defect_count']
     
     
@@ -167,12 +171,13 @@ def vision_calc(path, n):
     pl.ax2.imshow(white_defects['image'], cmap='gray')              
     
     white_total=white_defects['defects_all']
+    white_meanarea=white_defects['area_mean']
     white_summary=white_defects['defect_count']
 
     pl.ax2.set_ylabel("processed image, treshold", fontsize=10)
     pl.ax2.set_xlabel("black defects: " + str(black_summary) + ", white defects: " + str(white_summary), fontsize=10)
 
-    pl.fig.subplots_adjust(left=0.025, hspace=0.025,wspace=0.1)
+    pl.fig.subplots_adjust(left=0.025, bottom=0.025,right=0.975,top=0.975, hspace=0.025,wspace=0.1)
     
     if n==1:
         pl.fig.canvas.draw()   
@@ -180,12 +185,10 @@ def vision_calc(path, n):
 
 
 
-    return [n,coordinate_xy(n)[0], coordinate_xy(n)[1], black_summary,white_summary,black_total,white_total]
+    return [n,coordinate_xy(n)[0], coordinate_xy(n)[1], black_summary,white_summary,black_meanarea,white_meanarea,black_total,white_total]
 
 def vision_batch():
-    
-
-
+ 
     save_path=pathlabel.cget("text") + "/analysis/"
     if not os.path.isdir(save_path):
        os.mkdir(save_path)   
@@ -202,20 +205,17 @@ def vision_batch():
         path=pathlabel.cget("text") + '/' + listbox_entry        
         #print(path)
         output=vision_calc(path, i+1)
-        
-        total_defect_summary.append([output[0],output[1],output[2],output[3],output[4]])
-        total_black_summary=total_black_summary+output[5]       
-        total_white_summary=total_white_summary+output[6]
-        
+ 
+        total_defect_summary.append([output[0],output[1],output[2],output[3],output[4],output[5],output[6]])      
+        total_black_summary=total_black_summary+output[7]       
+        total_white_summary=total_white_summary+output[8]
         
         #save image and graphs
         q=str("%04d" % (i+1))
         path=save_path +  str(q)   +   "_analysis.jpg"
-        pl.plt.savefig(path, dpi=int(data['dpi']), bbox_inches='tight')
+        pl.plt.savefig(path, dpi=int(data['dpi']))
         
         root.update()
-
-
 
     #save data in textfiles 
     path=save_path + '\\Defects_Analysis_Setting.ini'    
@@ -223,7 +223,7 @@ def vision_batch():
     recipe.save_ini(path)    
     
     path=save_path + '\\Defects_Analysis_Results.txt'
-    np.savetxt(path, total_defect_summary, delimiter='\t',header='n\tx\ty\tcount_black\tcount_white', newline='\n',comments='')  
+    np.savetxt(path, total_defect_summary, delimiter='\t',header='n\tx\ty\tcount_black\tcount_white\tarea_mean_black\tarea_mean_white', newline='\n',comments='')  
     
     path=save_path + "\\Defects_All_Count_White.txt"
     df2 = pd.DataFrame (total_white_summary,columns = ['n','x_total','y_total','spot','x_img','y_img','area_white'])  
@@ -235,14 +235,14 @@ def vision_batch():
 
     #Save to excel file    
     path=save_path + '\\Defects_Analysis_Results.xlsx'
-    df1 = pd.DataFrame (total_defect_summary,columns = ['n', 'x','y','count_black','count_white'])
+    df1 = pd.DataFrame (total_defect_summary,columns = ['n', 'x','y','count_black','count_white','area_mean_black','area_mean_white'])
     df2 = pd.DataFrame (total_white_summary,columns = ['n','x_total','y_total','spot','x_img','y_img','area_white'])    
     df3 = pd.DataFrame (total_black_summary,columns = ['n','x_total','y_total','spot','x_img','y_img','area_black'])   
     # Create a Pandas Excel writer using XlsxWriter as the engine.
     writer = pd.ExcelWriter(path, engine='xlsxwriter')
 
     # Write each dataframe to a different worksheet.
-    df1.to_excel(writer, sheet_name='total_defect_summary')
+    df1.to_excel(writer, sheet_name='Total_Defect_Summary')
     df2.to_excel(writer, sheet_name='Defects_All_Count_White')
     df3.to_excel(writer, sheet_name='Defects_All_Count_Black')
     
@@ -302,13 +302,22 @@ root.columnconfigure(4, weight=1)
 root.columnconfigure(5, weight=1)
 
 
-root.rowconfigure(0, weight=1)
-root.rowconfigure(1, weight=10)
-root.rowconfigure(2, weight=1)
-root.rowconfigure(3, weight=50)
-root.rowconfigure(4, weight=1)
+root.rowconfigure(0, weight=0)
+root.rowconfigure(1, weight=0)
+root.rowconfigure(2, weight=0)
+root.rowconfigure(3, weight=20)
+root.rowconfigure(4, weight=0)
 
 files = tk.StringVar()
+
+versionlabel = tk.Label(root, text="")
+versionlabel.config(font=('helvetica', 12))
+versionlabel.grid(
+    column=4,
+    row=4,
+    columnspan = 1, rowspan =1,
+    sticky=tk.N+tk.E+tk.S)
+versionlabel.config(text=version)
 
 #File Listbox
 def OnEntryUpDown(event):
@@ -333,14 +342,13 @@ pathlabel.grid(
     column=1,
     row=0,
     columnspan = 1, rowspan =1,
-    sticky=tk.S+tk.W)
+    sticky=tk.E+tk.W)
 
 listbox = tk.Listbox(
     root,
     listvariable=files,
     selectmode=tk.SINGLE,
     exportselection=0,
-    height=10,
     width=10,
 )
 
@@ -491,7 +499,7 @@ photo = ImageTk.PhotoImage(img)
 
 label = tk.Label(root,image=photo)
 label.image = photo
-label.grid(column=4, row=1,    padx=(20,0), sticky=tk.W+tk.N+tk.E)
+label.grid(column=4, row=1,   padx=(20,0), sticky=tk.W+tk.N+tk.E)
 
 
 # Add a Button Select Files
@@ -537,13 +545,13 @@ openrecipe.grid(
 # specify the window as master
 canvas = pl.FigureCanvas(pl.fig, master=root)
 canvas.draw()
-canvas.get_tk_widget().grid(row=3, column=1, columnspan = 4, rowspan =1,    padx=0, pady=0,sticky=tk.S +tk.N+tk.W+tk.E)
+canvas.get_tk_widget().grid(row=3, column=1, columnspan = 4, rowspan =1,   padx=0, pady=0,sticky=tk.N+tk.S +tk.W+tk.E)
 
 
 
 # navigation toolbar
 toolbarFrame = tk.Frame(master=root)
-toolbarFrame.grid(row=4, column=1, columnspan = 4, rowspan =1,  padx=0, pady=5, sticky=tk.N+tk.W )
+toolbarFrame.grid(row=4, column=1, columnspan = 4, rowspan =1,  padx=0, pady=5, sticky=tk.N+tk.S +tk.W)
 toolbar = pl.NavigationToolbar(canvas, toolbarFrame)
 
 def on_closing():

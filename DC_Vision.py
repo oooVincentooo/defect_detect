@@ -1,6 +1,8 @@
 #from IPython import get_ipython
 #get_ipython().run_line_magic('matplotlib', 'qt5')
 
+
+
 import cv2
 import numpy as np
 
@@ -108,8 +110,14 @@ def blackdefects(im_num,x,y, img, gray_rgb, size, tres, morph_close, morph_open)
     
     contours=drawcontours(im_num,x,y,cnts,gray_rgb,(0, 110, 0))    
 
-
-    return  {"image": contours[0], "defect_count": len(contours[1]), "defects_all": contours[1]} 
+    #Mean area defect
+    if len(contours[1])==0:
+        areamean=0
+    else:
+        areas=np.array(contours[1])
+        areamean=np.mean(areas[:,6])
+        
+    return  {"image": contours[0], "defect_count": len(contours[1]),"area_mean": areamean, "defects_all": contours[1]} 
 
 def whitedefects(im_num,x,y, img, gray_rgb, size, tres, morph_close, morph_open):
     #White Spots
@@ -130,7 +138,14 @@ def whitedefects(im_num,x,y, img, gray_rgb, size, tres, morph_close, morph_open)
 
     #defectareablack=defectareablack+xcnts
     #pblack[n]=len(xcnts)
-
-    return  {"image": contours[0], "defect_count": len(contours[1]), "defects_all": contours[1]} 
+    
+    #Mean area defect
+    if len(contours[1])==0:
+        areamean=0
+    else:
+        areas=np.array(contours[1])
+        areamean=np.mean(areas[:,6])
+            
+    return  {"image": contours[0], "defect_count": len(contours[1]),"area_mean": areamean , "defects_all": contours[1]} 
 
 

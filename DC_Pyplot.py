@@ -111,8 +111,8 @@ def histogram(ravel,mean,stdev,treslow,tresup,lb,ub):
   
     
 #Pyplot
-fig= plt.figure(figsize = (10,4))
-#fig= plt.figure()
+#fig= plt.figure(figsize = (10,5.2))
+fig= plt.figure()
 
 gs1 = gridspec.GridSpec(1, 3)
 #gs1.update(wspace=0.1, hspace=0.1)
