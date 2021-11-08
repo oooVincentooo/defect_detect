@@ -111,7 +111,7 @@ def histogram(ravel,mean,stdev,treslow,tresup,lb,ub):
   
     
 #Pyplot
-#fig= plt.figure(figsize = (10,5.2))
+#fig= plt.figure(figsize = (15,3))
 fig= plt.figure()
 
 gs1 = gridspec.GridSpec(1, 3)
@@ -121,7 +121,14 @@ ax1 = fig.add_subplot(gs1[0,0])
 ax2 = fig.add_subplot(gs1[0,1])
 ax3 = fig.add_subplot(gs1[0,2])
 
-plt.tight_layout(pad=0.5, w_pad=1, h_pad=1.0)
+#plt.tight_layout(pad=0.5, w_pad=1, h_pad=1.0)
+fig.subplots_adjust(left=0.025, bottom=0.025,right=0.975,top=0.975, hspace=0.025,wspace=0.1)
+
+#plt.tight_layout(pad=0, w_pad=0.025, h_pad=0.025)
+
+#plt.tight_layout()
+
+
 #fig.subplots_adjust(hspace=0,wspace=1)
 #plt.tight_layout(pad=0, h_pad=0, w_pad=0)
 #plt.tight_layout()

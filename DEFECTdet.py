@@ -20,7 +20,7 @@ import os
 import sys
 
 
-version="version: 1.05"
+version="version: 1.06"
 
 def file_open():
    file = fd.askopenfilenames(parent=root, title='Open Images', filetypes=[
@@ -177,7 +177,9 @@ def vision_calc(path, n):
     pl.ax2.set_ylabel("processed image, treshold", fontsize=10)
     pl.ax2.set_xlabel("black defects: " + str(black_summary) + ", white defects: " + str(white_summary), fontsize=10)
 
-    pl.fig.subplots_adjust(left=0.025, bottom=0.025,right=0.975,top=0.975, hspace=0.025,wspace=0.1)
+    #pl.fig.subplots_adjust(left=0.025, bottom=0.025,right=0.975,top=0.975, hspace=0.025,wspace=0.1)
+    #pl.fig.subplots_adjust(left=0.025, bottom=None,right=0.975,top=1, hspace=0.025,wspace=0.1)    
+    
     
     if n==1:
         pl.fig.canvas.draw()   
@@ -294,18 +296,18 @@ root.iconbitmap(default='Settings/ICON.ico')
 
 
 
-root.columnconfigure(0, weight=1)
+root.columnconfigure(0, minsize=5)
 root.columnconfigure(1, weight=20)
-root.columnconfigure(2, weight=1)
+root.columnconfigure(2, minsize=5)
 root.columnconfigure(3, weight=20)
-root.columnconfigure(4, weight=1)
-root.columnconfigure(5, weight=1)
+root.columnconfigure(4, minsize=5)
+root.columnconfigure(5, minsize=5)
 
 
 root.rowconfigure(0, weight=0)
 root.rowconfigure(1, weight=0)
 root.rowconfigure(2, weight=0)
-root.rowconfigure(3, weight=20)
+root.rowconfigure(3, weight=40)
 root.rowconfigure(4, weight=0)
 
 files = tk.StringVar()

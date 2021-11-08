@@ -1,12 +1,16 @@
-#Main file DEFECTdet DEFECTdet(ector)
-DEFECTdet.py
+Information:
+Select a batch of images and detect for bright and dark defects. Several options morphing, CLAHE etc. Images processed in batch and summary results saved.
+Summary results are saves in *.txt and *.xlsx files. Uses CV2 contours and advanced treshold to detect bright and dark defects. Recipes can be created saved.
 
-Select a batch of images and detect for bright and dark defects. Summary results are saves in *.txt and *.xlsx files. 
+Main sourcecode:
+file DEFECTdet DEFECTdet.py
 
-Uses CV2 contours and advanced treshold to detect bright and dark defects.
-
-Analysis recipes can be created saved.
-
-Several options morphing, CLAHE etc. Images processed in batch and summary results saved.
+Installation:
+Please use the following way:
+- Copy folder [H:\...DEFECTdet] from [...\application] folder to system root: [c:\].
+- Open folder: [C:\DEFECTdet].
+- Right click: [DEFECTdet.exe].
+- Create shortcut to desktop.
+- Open program with shortcut.
 
 OOOVincentOOO
