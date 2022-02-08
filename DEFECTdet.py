@@ -6,9 +6,11 @@ from tkinter.messagebox import showinfo
 from tkinter import font as tkFont 
 
 import pandas as pd
-import xlsxwriter
+import openpyxl 
 
 from PIL import Image, ImageTk
+
+#import Image
 
 import numpy as np
 
@@ -20,7 +22,8 @@ import os
 import sys
 
 
-version="version: 1.06"
+
+version="version: 1.09"
 
 def file_open():
    file = fd.askopenfilenames(parent=root, title='Open Images', filetypes=[
@@ -144,6 +147,7 @@ def vision_calc(path, n):
     gray=vis.openimage(path)
     #print(out_tres)
     #recipe_settings()
+    
     pl.clearplots()
     pl.setplots()
     pl.ax1.imshow(gray, cmap='gray') 
@@ -241,14 +245,14 @@ def vision_batch():
     df2 = pd.DataFrame (total_white_summary,columns = ['n','x_total','y_total','spot','x_img','y_img','area_white'])    
     df3 = pd.DataFrame (total_black_summary,columns = ['n','x_total','y_total','spot','x_img','y_img','area_black'])   
     # Create a Pandas Excel writer using XlsxWriter as the engine.
-    writer = pd.ExcelWriter(path, engine='xlsxwriter')
+    writer = pd.ExcelWriter(path, engine='openpyxl')
 
     # Write each dataframe to a different worksheet.
     df1.to_excel(writer, sheet_name='Total_Defect_Summary')
     df2.to_excel(writer, sheet_name='Defects_All_Count_White')
     df3.to_excel(writer, sheet_name='Defects_All_Count_Black')
     
-    writer.save()
+    #writer.save()
     writer.close()
 
 xprev=0   
@@ -494,14 +498,27 @@ recipelabel.config(text="Default.ini")
 
 
 
-img = Image.open('settings/ICON.png')
+#img = Image.open('settings/ICON.png')
 #img = img.resize((int(650*0.25), int(900*0.25)), Image.ANTIALIAS)
-img = img.resize((int(650*0.25), int(900*0.25)))
-photo = ImageTk.PhotoImage(img)
+#img = img.resize((int(650*0.25), int(900*0.25)))
+#photo = ImageTk.PhotoImage(img)
 
-label = tk.Label(root,image=photo)
-label.image = photo
-label.grid(column=4, row=1,   padx=(20,0), sticky=tk.W+tk.N+tk.E)
+#label = tk.Label(root,image=photo)
+#label.image = photo
+#label.grid(column=4, row=1,   padx=(20,0), sticky=tk.W+tk.N+tk.E)
+
+
+
+img = Image.open('settings/ICON.png')
+img = img.resize((int(650*0.25), int(900*0.25)))
+bg = ImageTk.PhotoImage(img)
+lbl = tk.Label(root, image=bg)
+lbl.grid(column=4, row=1,   padx=(20,0), sticky='WNE')
+img.close()
+
+
+
+
 
 
 # Add a Button Select Files
@@ -560,6 +577,13 @@ def on_closing():
     root.destroy()
     sys.exit()
     raise SystemExit    
+
+try:
+    import pyi_splash
+    pyi_splash.update_text('Datacombiner Loaded ...')
+    pyi_splash.close()
+except:
+    pass 
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 

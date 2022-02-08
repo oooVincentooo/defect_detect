@@ -108,7 +108,7 @@ def histogram(ravel,mean,stdev,treslow,tresup,lb,ub):
     ax3.set_aspect(asp)
     #ax3.set_aspect(1024/1360)
     
-  
+#def initplot():  
     
 #Pyplot
 #fig= plt.figure(figsize = (15,3))
